@@ -9,7 +9,8 @@ paths.dofile('img.lua')
 if arg[1] == 'demo' or arg[1] == 'predict-test' then
     -- Test set annotations do not have ground truth part locations, but provide
     -- information about the location and scale of people in each image.
-    a = loadAnnotations('test')
+    -- a = loadAnnotations('test')
+    print("Skipping annotation load")
 
 elseif arg[1] == 'predict-valid' or arg[1] == 'eval' then
     -- Validation set annotations on the other hand, provide part locations,
@@ -26,11 +27,13 @@ else
 end
 
 m = torch.load('umich-stacked-hourglass.t7')   -- Load pre-trained model
+print("Model loaded.")
 
 if arg[1] == 'demo' then
-    idxs = torch.Tensor({695, 3611, 2486, 7424, 10032, 5, 4829})
+    -- idxs = torch.Tensor({695, 3611, 2486, 7424, 10032, 5, 4829})
     -- If all the MPII images are available, use the following line to see a random sampling of images
     -- idxs = torch.randperm(a.nsamples):sub(1,10)
+    print("Skipping idxs generation...")
 else
     idxs = torch.range(1,a.nsamples)
 end
@@ -38,7 +41,8 @@ end
 if arg[1] == 'eval' then
     nsamples = 0
 else
-    nsamples = idxs:nElement() 
+    -- nsamples = idxs:nElement() 
+    nsamples = 3
     -- Displays a convenient progress bar
     xlua.progress(0,nsamples)
     preds = torch.Tensor(nsamples,16,2)
@@ -50,10 +54,12 @@ end
 
 for i = 1,nsamples do
     -- Set up input image
-    local im = image.load('images/' .. a['images'][idxs[i]])
-    local center = a['center'][idxs[i]]
-    local scale = a['scale'][idxs[i]]
-    local inp = crop(im, center, scale, 0, 256)
+    -- im0020_C1_256.jpg
+    local im = image.load('images/im0020_C' .. i .. '_256.jpg' )
+    local center = {128, 128}
+    local scale = 1.0
+    -- local inp = crop(im, center, scale, 0, 256)
+    inp = im
 
     -- Get network output
     local out = m:forward(inp:view(1,3,256,256):cuda())
@@ -72,6 +78,7 @@ for i = 1,nsamples do
         preds_hm:mul(4) -- Change to input scale
         local dispImg = drawOutput(inp, hm, preds_hm[1])
         w = image.display{image=dispImg,win=w}
+        print(preds_img)
         sys.sleep(3)
     end
 
