@@ -3,6 +3,7 @@
 import os
 import h5py
 import numpy as np
+import csv
 
 prediction_file = '/home/emredog/git/pose-hg-demo/preds/he_test_cropped.h5'
 cropinfo_file = '/home/emredog/git/pose-hg-demo/images/he/test_256_cropped.csv'
@@ -16,9 +17,6 @@ im_size = 256
 half_im_size = im_size/2
 orig_w = 640
 orig_h = 480
-
-scale_x = float(orig_w) / float(im_w)
-scale_y = float(orig_h) / float(im_h)
 
 
 f = h5py.File(prediction_file, 'r')
