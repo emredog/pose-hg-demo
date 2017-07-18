@@ -4,9 +4,9 @@ import os
 import h5py
 import numpy as np
 
-prediction_file = '/home/emredog/git/pose-hg-demo/preds/he_test_cropped.h5'
+prediction_file = '/home/emredog/git/pose-hg-demo/preds/he_test_scaled.h5'
 
-csv_folder = '/home/emredog/git/pose-hg-demo/preds/he_test_cropped_csv/'
+csv_folder = '/home/emredog/git/pose-hg-demo/preds/he_test_scaled_csv/'
 # create folder 
 if not os.path.exists(csv_folder):
     os.makedirs(csv_folder)
