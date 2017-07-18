@@ -6,7 +6,7 @@ import cPickle as pickle
 from PIL import Image
 import numpy as np
 
-isTrain = True
+isTrain = False
 
 #raw_data_root = '/home/edogan/data/AdaptiveViewpointSelection/HumanEva/'
 raw_data_root = '/media/emredog/research-data/HumanEva-I/'
